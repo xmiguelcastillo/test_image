@@ -69,7 +69,7 @@ def upload_image(request):
         rColor = request.POST.get("rColor")
         gColor = request.POST.get("gColor")
         bColor = request.POST.get("bColor")
-        intensity = request.POST.get("intensity")
+        # intensity = request.POST.get("intensity")
         rgb = [int(rColor), int(gColor), int(bColor)]
         if not image_file:
             return JsonResponse({"error": "No image uploaded"}, status=400)
@@ -79,44 +79,44 @@ def upload_image(request):
             og_image = Image.open(image_file)
             image = image.convert("RGB")
 
-            image_output = np.array(image)
-            HEIGHT, WIDTH, COLORS = image_output.shape
+            # image_output = np.array(image)
+            # HEIGHT, WIDTH, COLORS = image_output.shape
+            #
+            # rotated = np.zeros((WIDTH, HEIGHT, COLORS), dtype=np.uint8)
+            # for y in range(HEIGHT):
+            #     for x in range(WIDTH):
+            #         rotated[x, HEIGHT - y - 1] = image_output[y, x]
 
-            rotated = np.zeros((WIDTH, HEIGHT, COLORS), dtype=np.uint8)
-            for y in range(HEIGHT):
-                for x in range(WIDTH):
-                    rotated[x, HEIGHT - y - 1] = image_output[y, x]
-
-            rotated_img = Image.fromarray(rotated)
+            # rotated_img = Image.fromarray(rotated)
             colored_img = change_color(og_image, rgb)
-            greyscaled_img = grayscale(og_image)
-            blurred_img = box_blur(og_image, int(intensity))
+            # greyscaled_img = grayscale(og_image)
+            # blurred_img = box_blur(og_image, int(intensity))
 
-            buffered_rotated = BytesIO()
-            rotated_img.save(buffered_rotated, format="PNG")
-            img_str = base64.b64encode(buffered_rotated.getvalue()).decode()
+            # buffered_rotated = BytesIO()
+            # rotated_img.save(buffered_rotated, format="PNG")
+            # img_str = base64.b64encode(buffered_rotated.getvalue()).decode()
 
             buffered_colored = BytesIO()
             colored_img.save(buffered_colored, format="PNG")
             img_colored_str = base64.b64encode(
                 buffered_colored.getvalue()).decode()
 
-            buffered_blurred = BytesIO()
-            blurred_img.save(buffered_blurred, format="PNG")
-            img_blurred_str = base64.b64encode(
-                buffered_blurred.getvalue()).decode()
+            # buffered_blurred = BytesIO()
+            # blurred_img.save(buffered_blurred, format="PNG")
+            # img_blurred_str = base64.b64encode(
+            #     buffered_blurred.getvalue()).decode()
 
-            buffered_grey = BytesIO()
-            greyscaled_img.save(buffered_grey, format="PNG")
-            img_grey_str = base64.b64encode(buffered_grey.getvalue()).decode()
+            # buffered_grey = BytesIO()
+            # greyscaled_img.save(buffered_grey, format="PNG")
+            # img_grey_str = base64.b64encode(buffered_grey.getvalue()).decode()
             return JsonResponse(
                 {
                     "message": "Image received successfully",
-                    "shape": [WIDTH, HEIGHT, COLORS],
-                    "rotated_base64": img_str,
+                    # "shape": [WIDTH, HEIGHT, COLORS],
+                    # "rotated_base64": img_str,
                     "colored_base64": img_colored_str,
-                    "blurred_base64": img_blurred_str,
-                    "grey_base64": img_grey_str,
+                    # "blurred_base64": img_blurred_str,
+                    # "grey_base64": img_grey_str,
                 }
             )
 
